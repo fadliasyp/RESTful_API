@@ -1,7 +1,7 @@
 import supertest from "supertest";
 import {web} from "../src/application/web.js";
 import {logger} from "../src/application/logging.js";
-import {createTestUser, getTestUser, removeTestUser} from "./test-util.js";
+import {createTestUser, removeTestUser} from "./test-util.js";
 import bcrypt from "bcrypt";
 
 describe('POST /api/users', function () {
