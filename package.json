@@ -2,7 +2,7 @@
   "name": "belajar-nodejs-restful-api",
   "version": "1.0.0",
   "description": "belajar nodejs RESTful api",
-  "main": "index.js",
+  "main": "src/main.js",
   "scripts": {
     "test": "jest -i"
   },
@@ -15,6 +15,7 @@
   "license": "ISC",
   "type": "module",
   "dependencies": {
+    "@prisma/client": "^5.16.0",
     "bcrypt": "^5.1.1",
     "express": "^4.19.2",
     "joi": "^17.13.3",
@@ -30,7 +31,7 @@
     "@types/uuid": "^10.0.0",
     "babel-jest": "^29.7.0",
     "jest": "^29.7.0",
-    "prisma": "^5.16.0",
+    "prisma": "^5.16.2",
     "supertest": "^7.0.0"
   }
 }
