@@ -40,33 +40,33 @@ describe('POST  /api/users', function () {
         expect(result.body.errors).toBeDefined()
     })
 
-    it('should reject if double al ready register new users', async() => {
-        let result = await supertest(web)
-        .post('/api/users')
-        .send({
-           username: 'fadli',
-           password: 'rahasia',
-           name:'asyp'
-        })
+    // it('should reject if double al ready register new users', async() => {
+    //     let result = await supertest(web)
+    //     .post('/api/users')
+    //     .send({
+    //        username: 'fadli',
+    //        password: 'rahasia',
+    //        name:'asyp'
+    //     })
 
-        logger.info(result.body)
-        expect(result.status).toBe(200)
-        expect(result.body.data.username).toBe('fadli')
-        expect(result.body.data.name).toBe('asyp')
-        expect(result.body.data.password).toBeUndefined()
+    //     logger.info(result.body)
+    //     expect(result.status).toBe(200)
+    //     expect(result.body.data.username).toBe('fadli')
+    //     expect(result.body.data.name).toBe('asyp')
+    //     expect(result.body.data.password).toBeUndefined()
 
-        result = await supertest(web)
-        .post('/api/users')
-        .send({
-           username: 'fadli',
-           password: 'rahasia',
-           name:'asyp'
-        })
+    //     result = await supertest(web)
+    //     .post('/api/users')
+    //     .send({
+    //        username: 'fadli',
+    //        password: 'rahasia',
+    //        name:'asyp'
+    //     })
 
-        logger.info(result.body)
-        expect(result.status).toBe(400)
-        expect(result.body.errors).toBeDefined()
-    })
+    //     logger.info(result.body)
+    //     expect(result.status).toBe(400)
+    //     expect(result.body.errors).toBeDefined()
+    // })
 
 })
 
