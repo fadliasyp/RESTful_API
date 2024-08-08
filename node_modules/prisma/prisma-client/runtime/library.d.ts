@@ -72,7 +72,9 @@ declare interface Attributes {
  */
 declare type AttributeValue = string | number | boolean | Array<null | undefined | string> | Array<null | undefined | number> | Array<null | undefined | boolean>;
 
-export declare type BaseDMMF = Pick<DMMF.Document, 'datamodel'>;
+export declare type BaseDMMF = {
+    readonly datamodel: Omit<DMMF.Datamodel, 'indexes'>;
+};
 
 declare type BatchArgs = {
     queries: BatchQuery[];
@@ -656,6 +658,7 @@ export declare namespace DMMF {
         models: Model[];
         enums: DatamodelEnum[];
         types: Model[];
+        indexes: Index[];
     }>;
     export type uniqueIndex = ReadonlyDeep_2<{
         name: string;
@@ -707,6 +710,24 @@ export declare namespace DMMF {
         args: any[];
     }>;
     export type FieldDefaultScalar = string | boolean | number;
+    export type Index = ReadonlyDeep_2<{
+        model: string;
+        type: IndexType;
+        isDefinedOnField: boolean;
+        name?: string;
+        dbName?: string;
+        algorithm?: string;
+        clustered?: boolean;
+        fields: IndexField[];
+    }>;
+    export type IndexType = 'id' | 'normal' | 'unique' | 'fulltext';
+    export type IndexField = ReadonlyDeep_2<{
+        name: string;
+        sortOrder?: SortOrder;
+        length?: number;
+        operatorClass?: string;
+    }>;
+    export type SortOrder = 'asc' | 'desc';
     export type Schema = ReadonlyDeep_2<{
         rootQueryType?: string;
         rootMutationType?: string;
@@ -1463,7 +1484,7 @@ export declare function getPrismaClient(config: GetPrismaClientConfig): {
         /**
          * Executes a raw query and returns selected data
          */
-        $queryRawInternal(transaction: PrismaPromiseTransaction | undefined, clientMethod: string, args: RawQueryArgs, middlewareArgsMapper?: MiddlewareArgsMapper<unknown, unknown>): Promise<unknown[]>;
+        $queryRawInternal(transaction: PrismaPromiseTransaction | undefined, clientMethod: string, args: RawQueryArgs, middlewareArgsMapper?: MiddlewareArgsMapper<unknown, unknown>): Promise<any>;
         /**
          * Executes a raw query provided through a safe tag function
          * @see https://github.com/prisma/prisma/issues/7142

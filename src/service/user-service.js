@@ -1,6 +1,6 @@
 import { prismaClient } from "../application/database.js";
 import { ResponseError } from "../error/response-error.js";
-import { loginUserValidation, registerUserValidation, getUserValidation, updateUserValidation} from "../validation/user-validation.js"
+import { registerUserValidation, loginUserValidation,getUserValidation, updateUserValidation } from "../validation/user-validation.js"
 import { validate } from "../validation/validation.js"
 import bcrypt from "bcrypt"
 import {v4 as uuid} from "uuid"
@@ -14,7 +14,7 @@ const register = async (request) => {
         }
     });
 
-    if (countUser === 1) {
+    if(countUser === 1){
         throw new ResponseError(400, "Username already exists");
     }
 
@@ -29,6 +29,8 @@ const register = async (request) => {
     });
 }
 
+
+
 const login = async (request) => {
     const loginRequest = validate(loginUserValidation, request);
 
@@ -36,19 +38,18 @@ const login = async (request) => {
         where: {
             username: loginRequest.username
         },
-        select: {
-            username: true,
-            password: true
-        }
-    });
-
-    if (!user) {
-        throw new ResponseError(401, "Username or password wrong");
+    select: {
+        username: true,
+        password: true,
     }
+    });
+    if(!user){
+        throw new ResponseError(401, "Username or password wrong")
+    }
+    const isPasswordValid= await bcrypt.compare(loginRequest.password, user.password)
 
-    const isPasswordValid = await bcrypt.compare(loginRequest.password, user.password);
-    if (!isPasswordValid) {
-        throw new ResponseError(401, "Username or password wrong");
+    if(!isPasswordValid){
+        throw new ResponseError(401, "Username or password wrong")
     }
 
     const token = uuid().toString()
@@ -62,11 +63,12 @@ const login = async (request) => {
         select: {
             token: true
         }
-    });
+    })
 }
 
-const get = async (username) => {
+const get = async(username) => {
     username = validate(getUserValidation, username);
+
     const user = await prismaClient.user.findUnique({
         where: {
             username: username
@@ -77,14 +79,15 @@ const get = async (username) => {
         }
     })
 
-    if(!user) {
-        throw new ResponseError(404, "User is not found");
+    if(!user){
+        throw new ResponseError(404, "User is not found")
     }
-    return user;
+
+    return user
 }
 
 const update = async (request) => {
-    const user = validate( updateUserValidation, request);
+    const user = validate(updateUserValidation, request);
 
     const totalUserInDatabase = await prismaClient.user.count({
         where: {
@@ -92,58 +95,59 @@ const update = async (request) => {
         }
     });
 
-    if(totalUserInDatabase !== 1) {
-        throw new ResponseError(404, "User is not found")
+    if(totalUserInDatabase !== 1){
+        throw new ResponseError(404, "User is not found");
     }
 
     const data = {};
     if(user.name){
-        data.name = user.name
-    };
+        data.name = user.name;
+    }
 
     if(user.password){
-        data.password = await bcrypt.hash(user.password, 10)
-    };
+        data.password = await bcrypt.hash(user.password, 10);
+    }
 
     return prismaClient.user.update({
         where: {
-            username : user.username
+            username: user.username
         },
         data: data,
         select: {
             username: true,
             name: true
+
         }
-    });
+    })
 }
 
+
 const logout = async (username) => {
-    username = validate(getUserValidation, username)
+    username = validate(getUserValidation, username);
+
     const user = await prismaClient.user.findUnique({
         where: {
             username: username
-        }
+        },
     })
-
-    if(!user) {
-        throw new ResponseError(404, "User is not found");
+    if(!user){
+        throw new ResponseError(404, "User is not found")
     }
     return prismaClient.user.update({
-        data: {
-            token: null
-        },
         where: {
             username: user.username
+        },
+        data: {
+            token: null
         },
         select: {
             username: true
         }
-    });
+    })
 }
-
 export default {
     register,
-    login, 
+    login,
     get,
     update,
     logout

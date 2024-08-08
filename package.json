@@ -1,19 +1,19 @@
 {
-  "name": "belajar-nodejs-restful-api",
+  "name": "backend",
   "version": "1.0.0",
-  "description": "belajar nodejs RESTful api",
-  "main": "src/main.js",
+  "main": "main.js",
   "scripts": {
     "test": "jest -i"
   },
+  "type": "module",
   "jest": {
     "transform": {
       "^.+\\.[t|j]sx?$": "babel-jest"
     }
   },
-  "author": "fadli asyp",
+  "keywords": [],
+  "author": "fadli dan tim",
   "license": "ISC",
-  "type": "module",
   "dependencies": {
     "@prisma/client": "^5.16.2",
     "bcrypt": "^5.1.1",
@@ -33,5 +33,6 @@
     "jest": "^29.7.0",
     "prisma": "^5.16.2",
     "supertest": "^7.0.0"
-  }
+  },
+  "description": ""
 }

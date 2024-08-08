@@ -1,6 +1,7 @@
-import {web} from "./application/web.js";
-import {logger} from "./application/logging.js";
 
-web.listen(3000, () => {
-    logger.info("App start");
-});
+import { logger } from "./application/logging.js";
+import { web } from "./application/web.js";
+
+web.listen(300, () => {
+    logger.info('app start;')
+})
