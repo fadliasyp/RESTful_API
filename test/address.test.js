@@ -78,9 +78,12 @@ it('should can get address', async() => {
     const testAddress = await getTestAddress();
     const result = await supertest(web)
     .get('/api/contacts/'+ testContact.id + '/addresses/' + testAddress.id)
-    .set('Authorization', 'test'))
+    .set('Authorization', 'test')
 
     expect(result.status).toBe(200)
     expect(result.body.data.id).toBeDefined()
     expect(result.body.data.street).toBe(testAddress.street)
+})
+
+
 })
