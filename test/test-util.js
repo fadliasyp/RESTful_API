@@ -1,10 +1,10 @@
-import { prismaClient } from "../src/application/database.js"
-import bcrypt from "bcrypt"
+import {prismaClient} from "../src/application/database.js";
+import bcrypt from "bcrypt";
 
 export const removeTestUser = async () => {
     await prismaClient.user.deleteMany({
         where: {
-            username: 'test'
+            username: "test"
         }
     })
 }
@@ -12,95 +12,93 @@ export const removeTestUser = async () => {
 export const createTestUser = async () => {
     await prismaClient.user.create({
         data: {
-            username: 'test',
-            password: await bcrypt.hash('rahasia', 10),
-            name: 'test',
-            token: 'test'
+            username: "test",
+            password: await bcrypt.hash("rahasia", 10),
+            name: "test",
+            token: "test"
         }
     })
 }
 
 export const getTestUser = async () => {
-    return await prismaClient.user.findUnique({
+    return prismaClient.user.findUnique({
         where: {
-            username: 'test'
+            username: "test"
         }
-    })
+    });
 }
 
-export const removeAllTestContact = async () => {
+export const removeAllTestContacts = async () => {
     await prismaClient.contact.deleteMany({
         where: {
             username: 'test'
         }
-    })
+    });
 }
 
 export const createTestContact = async () => {
     await prismaClient.contact.create({
         data: {
-            username: 'test',
-            first_name: 'test',
-            last_name: 'test',
-            email: 'test@pzn.com',
-            phone: '123456789'
+            username: "test",
+            first_name: "test",
+            last_name: "test",
+            email: "test@pzn.com",
+            phone: "080900000"
         }
     })
 }
 
+export const createManyTestContacts = async () => {
+    for (let i = 0; i < 15; i++) {
+        await prismaClient.contact.create({
+            data: {
+                username: `test`,
+                first_name: `test ${i}`,
+                last_name: `test ${i}`,
+                email: `test${i}@pzn.com`,
+                phone: `080900000${i}`
+            }
+        })
+    }
+}
+
 export const getTestContact = async () => {
-    return await prismaClient.contact.findFirst({
+    return prismaClient.contact.findFirst({
         where: {
             username: 'test'
         }
     })
 }
 
-
-export const createManyTestContact = async () => {
-    for (let i = 0; i < 15; i++) {
-          await prismaClient.contact.create({
-            data: {
-                username: 'test',
-               first_name: `test ${i}`,
-               last_name: `test ${i}`,
-               email: `test${i}@pzn.com`,
-               phone: `123456789${i}`
-            }
-        })
-    }
-}
-
 export const removeAllTestAddresses = async () => {
-   await prismaClient.address.deleteMany({
-       where: {
-        contact: {
-               username: 'test'
-           }
-       }
-   })
+    await prismaClient.address.deleteMany({
+        where: {
+            contact: {
+                username: "test"
+            }
+        }
+    });
 }
 
 export const createTestAddress = async () => {
-    const contact = await getTestContact()
+    const contact = await getTestContact();
     await prismaClient.address.create({
         data: {
             contact_id: contact.id,
-            street: 'jalan test',
+            street: "jalan test",
             city: 'kota test',
             province: 'provinsi test',
             country: 'indonesia',
-            postal_code: '12345'
+            postal_code: '234234'
         }
-        
     })
-} 
+}
 
 export const getTestAddress = async () => {
     return prismaClient.address.findFirst({
         where: {
             contact: {
-                username: 'test'
+                username: "test"
             }
         }
     })
